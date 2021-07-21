@@ -1,8 +1,9 @@
 package me.jaksa.humanreadable;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static me.jaksa.humanreadable.HumanReadableNumbers.h;
+import static me.jaksa.humanreadable.HumanReadableNumbers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HumanReadableNumbersTest {
@@ -31,7 +32,28 @@ class HumanReadableNumbersTest {
         assertEquals("-999P", h(-999_999_999_999_999_999L));
     }
 
-    @Test void benchmark() {
+    @Test void testConvertingByteSizes() {
+        assertEquals("1023", hb(1024-1));
+        assertEquals("1k", hb(1024));
+        assertEquals("1023k", hb(1024L*1024L-1));
+        assertEquals("1M", hb(1024L*1024L));
+        assertEquals("1023M", hb(1024L*1024L*1024L-1));
+        assertEquals("1G", hb(1024L*1024L*1024L));
+        assertEquals("1023G", hb(1024L*1024L*1024L*1024L-1));
+        assertEquals("1T", hb(1024L*1024L*1024L*1024L));
+        assertEquals("1023T", hb(1024L*1024L*1024L*1024L*1024L-1));
+        assertEquals("1P", hb(1024L*1024L*1024L*1024L*1024L));
+        assertEquals("1023P", hb(1024L*1024L*1024L*1024L*1024L*1024L-1));
+        assertEquals("1E", hb(1024L*1024L*1024L*1024L*1024L*1024L));
+    }
+
+    @Test void testAliases() {
+        assertEquals("123k", humanReadable(123456));
+        assertEquals("1023", humanReadableBytes(1023));
+        assertEquals("1k", humanReadableBytes(1024));
+    }
+
+    @Disabled @Test void benchmark() {
         long start = System.currentTimeMillis();
         for (long i = 0; i < 100_000_000; i++) {
             h(i);
